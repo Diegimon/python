@@ -1,0 +1,5 @@
+-Executar com o safesing fechado
+-Colocar a pasta "Cadeias AC Consulti " na Area de trabalho(Tem que ter esse nome)
+-Clicar no botão 'OK' reiniciará o processo, seleciona o token a ser inicializado antes de clicar no botão.
+-Não clicar em nada durante a execução do programa apenas durante a pausa
+-faça bom proveito💻
