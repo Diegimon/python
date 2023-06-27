@@ -1,0 +1,6 @@
+cor_reset = '\033[0m'
+cor_vermelha = '\033[31m'
+cor_verde = '\033[32m'
+cor_amarela = '\033[33m'
+cor_azul = '\033[34m'
+cor_ciano = '\033[36m'
