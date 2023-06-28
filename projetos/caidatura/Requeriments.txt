@@ -1,0 +1,7 @@
+You need to have python installed
+
+Need to install the library openpyxl
+
+The program will corrupt the worksheet if it is open during its execution, in which case it will be necessary to delete it and start the program again
+
+have te updated code in https://github.com/Diegimon/python/tree/main/projetos/caidatura
