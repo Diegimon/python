@@ -16,15 +16,6 @@ for library in required_libraries:
         subprocess.check_call(['pip', 'install', library])
 
 
-reset = '\033[0m'
-red = '\033[0;49;91m'
-green = '\033[32m'
-yellow = '\033[33m'
-blue = '\033[34m'
-ciano = '\033[36m'
-planilha = None
-
-
 def criar_planilha():
     # Verifica se a planilha já existe
     if os.path.exists("planilha.xlsx"):
@@ -34,7 +25,7 @@ def criar_planilha():
     # Cria uma nova planilha
 
     # Cria um DataFrame com alguns dados de exemplo
-    dados = {'name': ['Pedro Fernández', 'Juan Pérez', 'Pepito Limón', 'María Gamesa'],
+    dados = {'name': ['Pedro', 'Juan', 'Pepito', 'María'],
              'password': [123, 321, 123, 321],
              'account': ['PD201819HASRTR07', 'JP201819HASRTR06', 'PL211819HASRTR06', 'MG211811MASRTR05'],
              'balance': [1, 1, 1, 1]}
@@ -58,7 +49,7 @@ def criar_planilha():
         df_main.to_excel(writer, sheet_name='main', index=True)
         df_history.to_excel(writer, sheet_name='history', index=False)
 
-    print(f"{green}Planilhas created successfully.{reset}")
+    print(f"Planilhas created successfully.")
 
 
 def create_account():
@@ -68,20 +59,20 @@ def create_account():
     while True:
         name = input("Account Name: ")
         if name in df_main['name'].values:
-            print(f"{red}Account already exists{reset}")
+            print("Account already exists")
         else:
             while True:
                 password = input("Password: ")
                 confirm = input("Confirm Password: ")
                 if confirm != password:
-                    print(f"{red}The passwords are incorrect{reset}")
+                    print("The passwords are incorrect")
                 else:
                     balance = 1
                     account = gerar_sequencia()
                     nova_conta_main = pd.DataFrame({'name': [name],
                                                     'password': [password],
                                                     'account': [account],
-                                                   'balance': [balance]})
+                                                    'balance': [balance]})
                     nova_conta_history = pd.DataFrame({'account': [account],
                                                        'register': ['Account created']})
 
@@ -100,7 +91,7 @@ def create_account():
                         df_history.to_excel(
                             writer, sheet_name='history', index=False)
 
-                    print(f"{green}Account created successfully{reset}")
+                    print("Account created successfully")
                     break
 
             break
@@ -132,9 +123,9 @@ def validate_login(name, password):
     for linha in planilha_ativa.iter_rows(min_row=2, values_only=True):
         if name == linha[0]:
             user = True
-            print(f"{green}Valid user{reset}")
+            print(f"Valid user")
             if password == linha[2]:
-                print(f"{green}Valid password{reset}")
+                print(f"Valid password")
                 valida = True
                 account_name = linha[0]
                 account_number = linha[3]
@@ -142,10 +133,10 @@ def validate_login(name, password):
                 break
 
     if not user:
-        print(f"{red}Invalid username{reset}")
+        print("Invalid username")
 
     elif not valida:
-        print(f"{red}Invalid password{reset}")
+        print("Invalid password")
 
     return valida, account_name, account_number, balance
 
@@ -164,7 +155,7 @@ def deposit_amount(account_number, deposit):
             balance += deposit
             main[f"E{linha}"] = balance
             print(f"New Balance: {balance}")
-            print(f"{green}Deposit successfully{reset}")
+            print("Deposit successfully")
             reg = f"Deposit {deposit}$ New balance: {balance}"
             planilha.save("planilha.xlsx")
 
@@ -191,7 +182,7 @@ def show_history(account_number):
     for number in history['A']:
         if account_number == number.value:
             linha = number.row
-            print(yellow, history[f"B{linha}"].value, reset)
+            print(yellow, history[f"B{linha}"].value)
 
 
 def withdrawal_amount(account_number, withdraw):
@@ -206,11 +197,11 @@ def withdrawal_amount(account_number, withdraw):
             linha = celula.row
             balance = main[f'E{linha}'].value
             if withdraw > balance:
-                print(f"{red}You don't have enough!{reset}")
+                print("You don't have enough!")
             balance -= withdraw
             main[f"E{linha}"] = balance
             print(f"New Balance: {balance}")
-            print(f"{green}withdrawal successfully{reset}")
+            print("withdrawal successfully")
 
             # Atualizando historico
 
@@ -218,7 +209,7 @@ def withdrawal_amount(account_number, withdraw):
             break
 
     if not encontrado:
-        print(f"{red}Não encontrado{reset}")
+        print(f"Não encontrado")
     planilha.save("planilha.xlsx")
     aba_history = planilha['history']
     coluna_a = aba_history['A']
@@ -240,7 +231,7 @@ def delete_account(account_number):
             linha_da_conta = linha.row
             main.delete_rows(linha_da_conta)
             planilha.save("planilha.xlsx")
-            print(f"{yellow}Account deleted!{reset}")
+            print("Account deleted!")
             find = True
     if find == False:
         print("Account not found!")
@@ -260,7 +251,7 @@ def menu():
     print("=" * 20)
     valid = ["1", "2", "3", "4", "5", "6", "", " "]
     m = input(
-        f"{blue}[Enter] To Close{reset}\n[1] Create Account\n[2] Login\n[3] Deposit\n[4] Withdrawal\n[5] Help\n\n: ")
+        f"[Enter] To Close\n[1] Create Account\n[2] Login\n[3] Deposit\n[4] Withdrawal\n[5] Help\n\n: ")
     while m not in valid:
         print("Invalid option!")
         m = input("[1] Create Account\n[2] Login\n[3] Close\n: ")
@@ -286,16 +277,16 @@ def main():
 
             if valida == True:
                 account_number = f"{account_number}"
-                print(f"{yellow}Login successful!")
+                print(f"Login successful!")
                 print("Account Information:")
                 print("Name:", account_name)
                 print("Account:", account_number)
-                print("Balance:", balance, reset)
+                print("Balance:", balance)
 
                 while True:
                     print("=" * 20)
                     menu_option = input(
-                        f"{ciano}[1] Deposit\n[2] Withdrawal\n[3] History\n[4] Delete\n[5] Close\n: {reset}")
+                        "[1] Deposit\n[2] Withdrawal\n[3] History\n[4] Delete\n[5] Close\n: ")
 
                     if menu_option == '1':
                         deposit = float(input("Deposit amount: "))
@@ -313,7 +304,7 @@ def main():
                     else:
                         print("Invalid option!")
             else:
-                print(f"{red}Login failed!.{reset}")
+                print(f"Login failed!.")
 
         elif m == '3':
             account_number = input("Account number: ")
@@ -348,16 +339,16 @@ def main():
                     print("Insufficient funds")
 
         elif m == '5':
-            print(f"""{blue}You can get help by contacting the link below:
+            print(f"""You can get help by contacting the link below:
 https://api.whatsapp.com/send?hone=996528343
 
 or via email: dscontac@hotmail.com
 
-code: github.com/diegimon{reset}""")
+code: github.com/diegimon""")
         # elif m == '6':
         elif m == '' or m == ' ':
             print(
-                f"Prog{green}ram finis{blue}hed th{yellow}anks {reset}for the pre{yellow}fer{red}ence!{reset}")
+                f"Program finished thanks for the preference!")
             finaly = input("[press any button to end]\n")
             break
 
